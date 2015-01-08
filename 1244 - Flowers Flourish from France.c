@@ -1,41 +1,44 @@
 #include <stdio.h>
-#include <string.h>
+#include <ctype.h>
 
-
-#define WordSize 100
 
 int main()
 {
-	
-	FILE *in = fopen("input.txt","r");
+	char word;
+	int answer = 1;
+	scanf("%c", &word);
 
-	
-	
-	char word[WordSize];
-
-	fscanf(in,"%s",word);
-
-	while (word[0] != '*'){
+	while (word != '*'){
 		
-		char LettertoCheck = tolower(word[0]), check;
-		int answer = 1;
-			fscanf(in,"%c",&check);
-			while (check != '\n'){
-				fscanf(in,"%s",word);
-				if ( tolower(word[0]) != LettertoCheck )
-						answer = 0;
-		
-				fscanf(in,"%c",&check);
+		int value = tolower(word);
+		if (value > 96 && value < 123){
+			char pre, curr;
+			pre = curr = word;
+			
+			scanf("%c", &curr);
+			while (curr != '\n'){
+				int checkA = tolower(pre);
+				if (checkA < 95 || checkA > 122){
+					int checkB = tolower(curr);
+					if (checkB > 96 && checkB < 123){
+						if ( checkB != value){
+							answer = 0;
+						}
+					}
+				}
+				pre = curr;
+				scanf("%c", &curr);
 			}
 
-			if (answer == 1)
+			if (answer == 1){
 				printf("Y\n");
-			else 
+			}
+			if (answer == 0){
 				printf("N\n");
-			
-		fscanf(in,"%s",word);
+				answer = 1;
+			}
+		}
+		scanf("%c", &word);
 	}
-
-	fclose(in);
 	return 0;
 }
